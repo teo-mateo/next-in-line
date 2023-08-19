@@ -22,7 +22,9 @@ Content-Type: application/json
 {
   "Name": "Milk",
   "AddedBy": "John Doe",
-  "TagIds": [1]
+  "TagIds": [
+    1
+  ]
 }
 
 ### Modify Item Milk to be called Non-Fat Milk
@@ -30,7 +32,7 @@ PUT https://localhost:7174/api/items/1
 Content-Type: application/json
 
 {
-"NewName": "Non-Fat Milk"
+  "NewName": "Non-Fat Milk"
 }
 
 ### checking item 1
