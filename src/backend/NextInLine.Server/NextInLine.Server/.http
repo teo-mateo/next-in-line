@@ -1,0 +1,42 @@
+﻿### Add Tag grocery
+POST https://localhost:7174/api/items/tag
+Content-Type: application/json
+
+{
+  "TagName": "grocery"
+}
+
+### Add Tag electronics
+POST https://localhost:7174/api/items/tag
+Content-Type: application/json
+
+{
+  "TagName": "electronics"
+}
+
+
+### Add Item Milk with tag grocery, by John Doe
+POST https://localhost:7174/api/items
+Content-Type: application/json
+
+{
+  "Name": "Milk",
+  "AddedBy": "John Doe",
+  "TagIds": [1]
+}
+
+### Modify Item Milk to be called Non-Fat Milk
+PUT https://localhost:7174/api/items/1
+Content-Type: application/json
+
+{
+"NewName": "Non-Fat Milk"
+}
+
+### checking item 1
+POST https://localhost:7174/api/items/check/1
+
+
+### Getting item with id 1
+GET https://localhost:7174/api/items/1
+
