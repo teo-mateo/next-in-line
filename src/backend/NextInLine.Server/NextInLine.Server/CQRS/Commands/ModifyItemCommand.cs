@@ -31,9 +31,7 @@ public class ModifyItemCommandHandler : IRequestHandler<ModifyItemCommand>
             // Add the new tags for the item
             var insertTagsQuery = "INSERT INTO ItemTags (ItemId, TagId) VALUES (@ItemId, @TagId)";
             foreach (var tagId in request.NewTagIds)
-            {
                 await _dbConnection.ExecuteAsync(insertTagsQuery, new { request.ItemId, TagId = tagId });
-            }
         }
     }
 }

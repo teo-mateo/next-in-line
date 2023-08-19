@@ -20,17 +20,15 @@ public class CheckItemCommandHandler : IRequestHandler<CheckItemCommand, CheckIt
 
     public async Task<CheckItemResult> Handle(CheckItemCommand request, CancellationToken cancellationToken)
     {
-        var itemExists = await _connection.QuerySingleOrDefaultAsync<int?>("SELECT Id FROM Items WHERE Id = @ItemId", new { ItemId = request.ItemId });
+        var itemExists =
+            await _connection.QuerySingleOrDefaultAsync<int?>("SELECT Id FROM Items WHERE Id = @ItemId",
+                new { request.ItemId });
 
-        if (!itemExists.HasValue)
-        {
-            throw new ItemNotFoundException(request.ItemId);
-        }
+        if (!itemExists.HasValue) throw new ItemNotFoundException(request.ItemId);
 
         var sql = "UPDATE Items SET Checked = TRUE, WhenChecked = NOW() WHERE Id = @ItemId";
         var affectedRows = await _connection.ExecuteAsync(sql, new { request.ItemId });
 
         return new CheckItemResult(affectedRows > 0);
     }
-
 }

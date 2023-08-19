@@ -20,9 +20,9 @@ public class HealthController : ControllerBase
     {
         var result = await _mediator.Send(new HealthQuery());
 
-        return result.IsHealthy 
-            ? Ok(new { Status = "Healthy", Message = result.Message }) 
-            : StatusCode(500, 
-                new { Status = "Unhealthy", Message = result.Message });
+        return result.IsHealthy
+            ? Ok(new { Status = "Healthy", result.Message })
+            : StatusCode(500,
+                new { Status = "Unhealthy", result.Message });
     }
 }

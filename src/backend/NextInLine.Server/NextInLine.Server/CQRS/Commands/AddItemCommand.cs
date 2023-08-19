@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
+using Dapper;
+using MediatR;
 
 namespace NextInLine.Server.CQRS.Commands;
-using Dapper;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-
-using MediatR;
-using System.Collections.Generic;
 
 public record AddItemCommand(
-    [Required] string Name, 
+    [Required] string Name,
     [Required] string AddedBy, IEnumerable<int> TagIds) : IRequest<int>;
 
 public class AddItemCommandHandler : IRequestHandler<AddItemCommand, int>
@@ -29,20 +25,20 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, int>
                               VALUES (@Name, NOW(), @AddedBy) 
                               RETURNING Id;";
 
-        var itemId = await _connection.QuerySingleAsync<int>(insertItemSql, new 
+        var itemId = await _connection.QuerySingleAsync<int>(insertItemSql, new
         {
-            request.Name, 
-            request.AddedBy 
+            request.Name,
+            request.AddedBy
         });
 
         // Insert into ItemTags table
         if (request.TagIds.Any())
         {
             var insertItemTagsSql = @"INSERT INTO ItemTags(ItemId, TagId) VALUES (@ItemId, @TagId);";
-            await _connection.ExecuteAsync(insertItemTagsSql, request.TagIds.Select(tagId => new 
+            await _connection.ExecuteAsync(insertItemTagsSql, request.TagIds.Select(tagId => new
             {
-                ItemId = itemId, 
-                TagId = tagId 
+                ItemId = itemId,
+                TagId = tagId
             }));
         }
 

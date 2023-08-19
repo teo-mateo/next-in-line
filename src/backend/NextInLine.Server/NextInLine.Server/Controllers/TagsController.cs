@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NextInLine.Server.CQRS.Queries;
-using NextInLine.Server.CQRS.Queries.Models;
 
 namespace NextInLine.Server.Controllers;
 
@@ -17,13 +16,13 @@ public class TagsController : ControllerBase
     }
 
     /// <summary>
-    /// Get all tags
+    ///     Get all tags
     /// </summary>
     /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> GetTags()
     {
-        IEnumerable<Tag> tags = await _mediator.Send(new GetTagsQuery());
+        var tags = await _mediator.Send(new GetTagsQuery());
         return Ok(tags);
     }
 }

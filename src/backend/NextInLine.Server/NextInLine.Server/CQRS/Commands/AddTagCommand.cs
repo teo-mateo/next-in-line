@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
+using Dapper;
+using MediatR;
 
 namespace NextInLine.Server.CQRS.Commands;
-
-using MediatR;
-using Dapper;
-using System.Data;
-using System.Threading.Tasks;
 
 public record AddTagCommand([Required] string TagName) : IRequest<AddTagResult>;
 
@@ -23,13 +21,10 @@ public class AddTagCommandHandler : IRequestHandler<AddTagCommand, AddTagResult>
     public async Task<AddTagResult> Handle(AddTagCommand request, CancellationToken cancellationToken)
     {
         var existingTagSql = @"SELECT Id FROM Tags WHERE LOWER(TagName) = LOWER(@TagName);";
-        var existingTagId = await _connection.QueryFirstOrDefaultAsync<int?>(existingTagSql, 
+        var existingTagId = await _connection.QueryFirstOrDefaultAsync<int?>(existingTagSql,
             new { request.TagName });
 
-        if (existingTagId.HasValue)
-        {
-            return new AddTagResult(true, "Tag already exists.", existingTagId);
-        }
+        if (existingTagId.HasValue) return new AddTagResult(true, "Tag already exists.", existingTagId);
 
         var insertTagSql = @"INSERT INTO Tags(TagName) VALUES (@TagName) RETURNING Id;";
         var newTagId = await _connection.QuerySingleAsync<int>(insertTagSql, new { request.TagName });

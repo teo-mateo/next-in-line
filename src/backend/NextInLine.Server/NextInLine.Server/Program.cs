@@ -20,10 +20,7 @@ var cn = cnTemplate.Replace("{ENV_POSTGRES_PWD}", actualPassword);
 builder.Services.AddTransient<IDbConnection>(_ => new NpgsqlConnection(cn));
 
 //lower case routes
-builder.Services.Configure<RouteOptions>(options =>
-{
-    options.LowercaseUrls = true;
-});
+builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {

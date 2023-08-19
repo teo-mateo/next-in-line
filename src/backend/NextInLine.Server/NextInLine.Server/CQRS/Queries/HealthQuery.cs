@@ -4,7 +4,7 @@ using MediatR;
 
 namespace NextInLine.Server.CQRS.Queries;
 
-public record HealthQuery() : IRequest<HealthResult>;
+public record HealthQuery : IRequest<HealthResult>;
 
 public record HealthResult(bool IsHealthy, string Message = "");
 
@@ -30,4 +30,3 @@ public class HealthQueryHandler : IRequestHandler<HealthQuery, HealthResult>
         }
     }
 }
-
