@@ -72,4 +72,14 @@ public class ItemsController : ControllerBase
         var item = await _mediator.Send(new GetItemQuery(itemId));
         return Ok(item);
     }
+    
+    /// <summary>
+    /// Gets unchecked items by tag id
+    /// </summary>
+    [HttpGet("unchecked/{tagId:int}")]
+    public async Task<ActionResult<IEnumerable<Item>>> GetUncheckedItemsByTag(int tagId)
+    {
+        var items = await _mediator.Send(new GetUncheckedItemsByTagQuery(tagId));
+        return Ok(items);
+    }
 }
